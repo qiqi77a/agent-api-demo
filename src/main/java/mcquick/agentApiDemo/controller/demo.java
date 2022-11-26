@@ -124,11 +124,11 @@ public class demo {
         ModifyMerSettleCardReq req = new ModifyMerSettleCardReq();
         req.merchantCode = 793122961732276224L;
 
-        FileUploadReq fileUploadReq = new FileUploadReq();
-        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\银行卡-正面.jpg");
-        fileUploadReq.fileType = FileUploadType.结算卡.id;
-        BaseRsp<FileUploadRsp> fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
-        req.bankCardFilepath = fileUploadResult.getData().getFilepath();
+//        FileUploadReq fileUploadReq = new FileUploadReq();
+//        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\银行卡-正面.jpg");
+//        fileUploadReq.fileType = FileUploadType.结算卡.id;
+//        BaseRsp<FileUploadRsp> fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
+//        req.bankCardFilepath = fileUploadResult.getData().getFilepath();
 
         req.bankCardNo = "4563511700882285654";
         req.phone = "13452146534";
@@ -157,15 +157,15 @@ public class demo {
         req.merPhone = "13452146534";
 
         //身份证信息
-        FileUploadReq fileUploadReq = new FileUploadReq();
-        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-正面.jpg");
-        fileUploadReq.fileType = FileUploadType.身份证正面.id;
-        BaseRsp<FileUploadRsp> fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
-        req.idCardFrontFilepath = fileUploadResult.getData().getFilepath();
-        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-反面.jpg");
-        fileUploadReq.fileType = FileUploadType.身份证背面.id;
-        fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
-        req.idCardBackFilepath = fileUploadResult.getData().getFilepath();
+//        FileUploadReq fileUploadReq = new FileUploadReq();
+//        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-正面.jpg");
+//        fileUploadReq.fileType = FileUploadType.身份证正面.id;
+//        BaseRsp<FileUploadRsp> fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
+//        req.idCardFrontFilepath = fileUploadResult.getData().getFilepath();
+//        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-反面.jpg");
+//        fileUploadReq.fileType = FileUploadType.身份证背面.id;
+//        fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
+//        req.idCardBackFilepath = fileUploadResult.getData().getFilepath();
         req.realName = "古人API";
         req.idCardNo = "210604199001017858";
         req.gender = Gender.男.id;
@@ -176,10 +176,10 @@ public class demo {
         req.address = "广东省深圳市深圳湾一号";
 
         //结算卡信息
-        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\银行卡-正面.jpg");
-        fileUploadReq.fileType = FileUploadType.结算卡.id;
-        fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
-        req.bankCardFilepath = fileUploadResult.getData().getFilepath();
+//        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\银行卡-正面.jpg");
+//        fileUploadReq.fileType = FileUploadType.结算卡.id;
+//        fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
+//        req.bankCardFilepath = fileUploadResult.getData().getFilepath();
         req.bankCardNo = "6222621310045659451";
         req.zBankCode = "301421000161";
         req.phone = "13452146534";
@@ -196,10 +196,10 @@ public class demo {
 
     private void testFileUpload(AgentApiClient client) {
         FileUploadReq req = new FileUploadReq();
-        req.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-正面.jpg");
-        req.fileType = FileUploadType.身份证正面.id;
-        req.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-反面.jpg");
-        req.fileType = FileUploadType.身份证背面.id;
+//        req.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-正面.jpg");
+//        req.fileType = FileUploadType.身份证正面.id;
+//        req.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\古人-反面.jpg");
+//        req.fileType = FileUploadType.身份证背面.id;
         req.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\银行卡-正面.jpg");
         req.fileType = FileUploadType.结算卡.id;
         BaseRsp<FileUploadRsp> result = client.send(req, FileUploadRsp.class);

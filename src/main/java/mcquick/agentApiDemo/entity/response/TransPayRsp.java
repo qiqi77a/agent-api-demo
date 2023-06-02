@@ -2,6 +2,10 @@ package mcquick.agentApiDemo.entity.response;
 
 public class TransPayRsp {
     /**
+     * 商户编号
+     */
+    private Long merchantCode;
+    /**
      * 支付订单号
      */
     private String orderNo;
@@ -20,7 +24,7 @@ public class TransPayRsp {
     /**
      * 订单失败原因
      */
-    private String orderMsg;
+    private String transMsg;
     /**
      * 下单时间  20220402000000
      */
@@ -58,19 +62,27 @@ public class TransPayRsp {
         this.transStatus = transStatus;
     }
 
-    public String getOrderMsg() {
-        return orderMsg;
-    }
-
-    public void setOrderMsg(String orderMsg) {
-        this.orderMsg = orderMsg;
-    }
-
     public Long getPayOrderTime() {
         return payOrderTime;
     }
 
     public void setPayOrderTime(Long payOrderTime) {
         this.payOrderTime = payOrderTime;
+    }
+
+    public Long getMerchantCode() {
+        return merchantCode;
+    }
+
+    public void setMerchantCode(Long merchantCode) {
+        this.merchantCode = merchantCode;
+    }
+
+    public String getTransMsg() {
+        return transMsg;
+    }
+
+    public void setTransMsg(String transMsg) {
+        this.transMsg = transMsg;
     }
 }

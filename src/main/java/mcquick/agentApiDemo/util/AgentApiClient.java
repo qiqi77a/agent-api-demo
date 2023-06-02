@@ -1,7 +1,13 @@
 package mcquick.agentApiDemo.util;
 
+import cn.hutool.core.codec.Base64;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.asymmetric.KeyType;
+import cn.hutool.crypto.asymmetric.RSA;
+import cn.hutool.crypto.asymmetric.Sign;
+import cn.hutool.crypto.asymmetric.SignAlgorithm;
 import com.alibaba.fastjson2.*;
 import mcquick.agentApiDemo.entity.response.base.BaseCallBackRsp;
 import mcquick.agentApiDemo.entity.response.base.BaseRsp;
@@ -10,6 +16,7 @@ import mcquick.agentApiDemo.exception.CheckException;
 import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,15 +25,19 @@ public class AgentApiClient {
     private String agentId;
     private String host;
     private String key;
+    private String privateKey;
+    private String publicKey;
     private Boolean isHttps = false;
 
     private AgentApiClient() {
     }
 
-    public AgentApiClient(String agentId, String host, String key) {
+    public AgentApiClient(String agentId, String host, String key, String privateKey, String publicKey) {
         this.agentId = agentId;
         this.host = host;
         this.key = key;
+        this.privateKey = privateKey;
+        this.publicKey = publicKey;
     }
 
     public BaseRsp<?> send(Object req) {
@@ -125,6 +136,13 @@ public class AgentApiClient {
 
     public String buildCall(BaseCallBackRsp req) {
         String data = JSON.toJSONString(req);
+        //签名
+        Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, privateKey, null);
+        Map<String, Object> map = JSONObject.parseObject(data, new TypeReference<Map<String, String>>(){});
+        String signStr = Base64.encode(sign.sign(StrUtil.utf8Bytes(ParamUtil.mapToKV(map))));
+        JSONObject jsonObject = JSON.parseObject(data);
+        jsonObject.put("sign", signStr);
+        data = JSON.toJSONString(jsonObject);
         //加密
         String encryptBase64Data = SecureUtil.aes(key.getBytes()).encryptBase64(data);
         //组装参数
@@ -171,8 +189,15 @@ public class AgentApiClient {
             System.out.println("newData>>>" + data);
         }
 
+        //签名
+        Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, privateKey, null);
+        Map<String, Object> map = JSONObject.parseObject(data, new TypeReference<Map<String, String>>(){});
+        String signStr = Base64.encode(sign.sign(StrUtil.utf8Bytes(ParamUtil.mapToKV(map))));
+        jsonObject = JSON.parseObject(data);
+        jsonObject.put("sign", signStr);
+        data = JSON.toJSONString(jsonObject);
         //加密
-        String encryptBase64Data = SecureUtil.aes(key.getBytes()).encryptBase64(data);
+        String encryptBase64Data = SecureUtil.aes(key.getBytes()).encryptBase64(data, StandardCharsets.UTF_8);
         //组装参数
         Map<String, Object> reqMap = new HashMap<>();
         reqMap.put("agentId", agentId);
@@ -188,22 +213,31 @@ public class AgentApiClient {
         JSONObject obj = JSON.parseObject(resp);
         if (StrUtil.isBlank(obj.getString("code"))) {
             throw new CheckException("返回信息错误");
-        } else if (StrUtil.isNotBlank(obj.getString("data")) && StrUtil.isNotBlank(obj.getString("agentId")) && obj.getString("agentId").equals(agentId)) {
+        } else {
             //解密
             String dataJson = obj.getString("data");
             System.out.println("dataJson>>>" + dataJson);
-            String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson);
-            obj.put("data", decryptStrData);
-            T o = JSON.parseObject(decryptStrData, typeReference);
+            T o = null;
+            if (dataJson != null) {
+                String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
+                obj.put("data", decryptStrData);
+                o = JSON.parseObject(decryptStrData, typeReference);
+
+                //验签
+                Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
+                Object signStr = map.get("sign");
+                if (signStr != null) {
+                    Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
+                    boolean verify = sign.verify(StrUtil.utf8Bytes(ParamUtil.mapToKV(map)), Base64.decode(Convert.toStr((String)signStr)));
+                    Assert.isTrue(verify,new CheckException("参数验签失败"));
+                }
+            }
             //组装返回值
             BaseRsp<T> result = new BaseRsp<>();
             result.setCode(obj.getInteger("code"));
             result.setMsg(obj.getString("msg"));
             result.setData(o);
             return result;
-        } else {
-            //data为空不用解密
-            return JSON.parseObject(resp, new TypeReference<BaseRsp<T>>() {});
         }
     }
 
@@ -216,22 +250,31 @@ public class AgentApiClient {
         JSONObject obj = JSON.parseObject(resp);
         if (StrUtil.isBlank(obj.getString("code"))) {
             throw new CheckException("返回信息错误");
-        } else if (StrUtil.isNotBlank(obj.getString("data")) && StrUtil.isNotBlank(obj.getString("agentId")) && obj.getString("agentId").equals(agentId)) {
+        } else {
             //解密
             String dataJson = obj.getString("data");
             System.out.println("dataJson>>>" + dataJson);
-            String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson);
-            obj.put("data", decryptStrData);
-            T o = JSON.parseObject(decryptStrData, rsp);
+            T o = null;
+            if (dataJson != null) {
+                String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
+                obj.put("data", decryptStrData);
+                o = JSON.parseObject(decryptStrData, rsp);
+
+                //验签
+                Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
+                Object signStr = map.get("sign");
+                if (signStr != null) {
+                    Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
+                    boolean verify = sign.verify(StrUtil.utf8Bytes(ParamUtil.mapToKV(map)), Base64.decode(Convert.toStr((String)signStr)));
+                    Assert.isTrue(verify,new CheckException("参数验签失败"));
+                }
+            }
             //组装返回值
             BaseRsp<T> result = new BaseRsp<>();
             result.setCode(obj.getInteger("code"));
             result.setMsg(obj.getString("msg"));
             result.setData(o);
             return result;
-        } else {
-            //data为空或agentId为空，不用解密
-            return JSON.parseObject(resp, new TypeReference<BaseRsp<T>>(rsp) {});
         }
     }
 

@@ -6,6 +6,10 @@ public class TransSendMsgReq {
      */
     public Long merchantCode;
     /**
+     * 服务商订单号(上送的订单号)
+     */
+    public String agentOrderNo;
+    /**
      * 交易金额(分)
      */
     public Long amount;
@@ -33,16 +37,4 @@ public class TransSendMsgReq {
      * 商户结算手续费（分）
      */
     public Long settleFee;
-    /**
-     * 商户ip
-     */
-    public String clientIP;
-    /**
-     * 商户交易所在地区省编码
-     */
-    public Integer provCode;
-    /**
-     * 商户交易所在地区市编码
-     */
-    public Integer cityCode;
 }

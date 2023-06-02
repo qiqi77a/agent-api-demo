@@ -9,4 +9,12 @@ public class QueryOrderReq {
      * 订单号
      */
     public String orderNo;
+    /**
+     * 服务商订单号(上送的订单号)
+     */
+    public String agentOrderNo;
+    /**
+     * 下单时间
+     */
+    public String payOrderTime;
 }

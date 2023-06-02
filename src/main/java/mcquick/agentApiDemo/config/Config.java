@@ -10,6 +10,6 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
     @Bean
     public AgentApiClient agentApiClient(AgentApiClientConfig apiClientConfig) {
-        return new AgentApiClient(apiClientConfig.getAgentId(), apiClientConfig.getHost(), apiClientConfig.getKey());
+        return new AgentApiClient(apiClientConfig.getAgentId(), apiClientConfig.getHost(), apiClientConfig.getKey(), apiClientConfig.getPrivateKey(), apiClientConfig.getPublicKey());
     }
 }

@@ -3,24 +3,21 @@ package mcquick.agentApiDemo.entity.response;
 public class QueryOrderRsp {
     /**
      * 交易状态
-     * SUCCESS	成功（出款成功）
-     * FAIL	失败（扣款失败或订单截止时间未付款成功）
-     * PROCESSING	处理中（在 FAIL 之外的情况下在出款成功之前都是此状态）
+     * 100-待支付 200-交易处理中 300-交易成功 400-交易失败 500-出款中 600-出款成功 700-出款失败 800-出款冻结
      */
-    public String trxStatus;
+    public String transStatus;
     /**
      * 交易状态描述
      */
-    public String msg;
-
-    /**
-     * 商户编号
-     */
-    public Long merchantCode;
+    public String transMsg;
     /**
      * 交易订单号
      */
     public String orderNo;
+    /**
+     * 服务商订单号(上送的订单号)
+     */
+    public String agentOrderNo;
     /**
      * 交易金额(分)
      */
@@ -34,44 +31,24 @@ public class QueryOrderRsp {
      */
     public Long settleFee;
     /**
-     * 下单时间 yyyyMMddhhmmss
-     */
-    public Long createTime;
-    /**
      * 支付时间 yyyyMMddhhmmss
      */
     public Long tranTime;
-    /**
-     * 真实姓名
-     */
-    public String realName;
-    /**
-     * 支付卡号
-     */
-    public String cardNo;
 
-    public String getTrxStatus() {
-        return trxStatus;
+    public String getTransStatus() {
+        return transStatus;
     }
 
-    public void setTrxStatus(String trxStatus) {
-        this.trxStatus = trxStatus;
+    public void setTransStatus(String transStatus) {
+        this.transStatus = transStatus;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getTransMsg() {
+        return transMsg;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public Long getMerchantCode() {
-        return merchantCode;
-    }
-
-    public void setMerchantCode(Long merchantCode) {
-        this.merchantCode = merchantCode;
+    public void setTransMsg(String transMsg) {
+        this.transMsg = transMsg;
     }
 
     public String getOrderNo() {
@@ -80,6 +57,14 @@ public class QueryOrderRsp {
 
     public void setOrderNo(String orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getAgentOrderNo() {
+        return agentOrderNo;
+    }
+
+    public void setAgentOrderNo(String agentOrderNo) {
+        this.agentOrderNo = agentOrderNo;
     }
 
     public Long getAmount() {
@@ -112,21 +97,5 @@ public class QueryOrderRsp {
 
     public void setTranTime(Long tranTime) {
         this.tranTime = tranTime;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public String getCardNo() {
-        return cardNo;
-    }
-
-    public void setCardNo(String cardNo) {
-        this.cardNo = cardNo;
     }
 }

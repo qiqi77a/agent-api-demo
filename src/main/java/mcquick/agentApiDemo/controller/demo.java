@@ -40,16 +40,10 @@ public class demo {
             //业务处理。。。
 
             //验签成功
-            PayCallBackRsp backRsp = new PayCallBackRsp();
-            backRsp.setReqNo(data.ReqNo);
-            backRsp.setStatus(100);
-            return agentApiClient.buildCall(backRsp);
+            return "SUCCESS";
         } catch (CheckException e) {
             //验签失败
-            PayCallBackRsp backRsp = new PayCallBackRsp();
-            backRsp.setReqNo(data == null ? "" : data.ReqNo);
-            backRsp.setStatus(200);
-            return agentApiClient.buildCall(backRsp);
+            return "验签失败";
         }
     }
 
@@ -95,8 +89,8 @@ public class demo {
     private void queryOrder(AgentApiClient client) {
         QueryOrderReq req = new QueryOrderReq();
         req.merchantCode = 862017372775649280L;
-        req.orderNo = "AA20230602861987138965737473";
-        req.agentOrderNo = "hmu2gf3yo0sm2tvgmf";
+        req.orderNo = "AA20230602862030082812809217";
+        req.agentOrderNo = "3zxp3rh76auvychy86";
         req.payOrderTime = "20230602123014";
         BaseRsp<QueryOrderRsp> result = client.send(req, QueryOrderRsp.class);
         QueryOrderRsp data = result.getData();
@@ -108,7 +102,7 @@ public class demo {
         TransPayReq req = new TransPayReq();
         req.merchantCode = 862017372775649280L;
         req.smsCode = "123456";
-        req.orderNo = "AA20230602861987138965737473";
+        req.orderNo = "AA20230602862030082812809217";
         BaseRsp<TransPayRsp> result = client.send(req, TransPayRsp.class);
         TransPayRsp data = result.getData();
         System.out.println(JSON.toJSONString(result));
@@ -158,16 +152,7 @@ public class demo {
         req.merPhone = "13498652013";
 
         //身份证信息
-//        FileUploadReq fileUploadReq = new FileUploadReq();
-//        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\getCitizenIDImg.jpg");
-//        fileUploadReq.fileType = FileUploadType.身份证正面.id;
-//        BaseRsp<FileUploadRsp> fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
-//        req.idCardFrontFilepath = fileUploadResult.getData().getUri();
         req.idCardFrontFilepath = "http://oss-test.99kypay.com/message/7f02b7affb87420fb09cef3233ae938f.jpg";
-//        fileUploadReq.file = new File("D:\\Users\\23120\\Pictures\\Saved Pictures\\getCitizenIDImg (1).jpg");
-//        fileUploadReq.fileType = FileUploadType.身份证背面.id;
-//        fileUploadResult = client.send(fileUploadReq, FileUploadRsp.class);
-//        req.idCardBackFilepath = fileUploadResult.getData().getUri();
         req.idCardBackFilepath = "http://oss-test.99kypay.com/message/a7c143dfc7da48f8ba18f9c5fafbaeab.jpg";
         req.realName = "万晧";
         req.idCardNo = "460005198412098950";

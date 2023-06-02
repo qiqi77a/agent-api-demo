@@ -211,34 +211,30 @@ public class AgentApiClient {
             throw new CheckException("渠道响应数据为空");
         }
         JSONObject obj = JSON.parseObject(resp);
-        if (StrUtil.isBlank(obj.getString("code"))) {
-            throw new CheckException("返回信息错误");
-        } else {
-            //解密
-            String dataJson = obj.getString("data");
-            System.out.println("dataJson>>>" + dataJson);
-            T o = null;
-            if (dataJson != null) {
-                String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
-                obj.put("data", decryptStrData);
-                o = JSON.parseObject(decryptStrData, typeReference);
+        //解密
+        String dataJson = obj.getString("data");
+        System.out.println("dataJson>>>" + dataJson);
+        T o = null;
+        if (dataJson != null) {
+            String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
+            obj.put("data", decryptStrData);
+            o = JSON.parseObject(decryptStrData, typeReference);
 
-                //验签
-                Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
-                Object signStr = map.get("sign");
-                if (signStr != null) {
-                    Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
-                    boolean verify = sign.verify(StrUtil.utf8Bytes(ParamUtil.mapToKV(map)), Base64.decode(Convert.toStr((String)signStr)));
-                    Assert.isTrue(verify,new CheckException("参数验签失败"));
-                }
+            //验签
+            Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
+            Object signStr = map.get("sign");
+            if (signStr != null) {
+                Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
+                boolean verify = sign.verify(StrUtil.utf8Bytes(ParamUtil.mapToKV(map)), Base64.decode(Convert.toStr((String)signStr)));
+                Assert.isTrue(verify,new CheckException("参数验签失败"));
             }
-            //组装返回值
-            BaseRsp<T> result = new BaseRsp<>();
-            result.setCode(obj.getInteger("code"));
-            result.setMsg(obj.getString("msg"));
-            result.setData(o);
-            return result;
         }
+        //组装返回值
+        BaseRsp<T> result = new BaseRsp<>();
+        result.setCode(StrUtil.isNotBlank(obj.getString("code")) ? obj.getInteger("code") : 0);
+        result.setMsg(obj.getString("msg"));
+        result.setData(o);
+        return result;
     }
 
     public <T> BaseRsp<T> afterSend(Class<T> rsp, String resp) {
@@ -248,34 +244,30 @@ public class AgentApiClient {
             throw new CheckException("渠道响应数据为空");
         }
         JSONObject obj = JSON.parseObject(resp);
-        if (StrUtil.isBlank(obj.getString("code"))) {
-            throw new CheckException("返回信息错误");
-        } else {
-            //解密
-            String dataJson = obj.getString("data");
-            System.out.println("dataJson>>>" + dataJson);
-            T o = null;
-            if (dataJson != null) {
-                String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
-                obj.put("data", decryptStrData);
-                o = JSON.parseObject(decryptStrData, rsp);
+        //解密
+        String dataJson = obj.getString("data");
+        System.out.println("dataJson>>>" + dataJson);
+        T o = null;
+        if (dataJson != null) {
+            String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
+            obj.put("data", decryptStrData);
+            o = JSON.parseObject(decryptStrData, rsp);
 
-                //验签
-                Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
-                Object signStr = map.get("sign");
-                if (signStr != null) {
-                    Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
-                    boolean verify = sign.verify(StrUtil.utf8Bytes(ParamUtil.mapToKV(map)), Base64.decode(Convert.toStr((String)signStr)));
-                    Assert.isTrue(verify,new CheckException("参数验签失败"));
-                }
+            //验签
+            Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
+            Object signStr = map.get("sign");
+            if (signStr != null) {
+                Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
+                boolean verify = sign.verify(StrUtil.utf8Bytes(ParamUtil.mapToKV(map)), Base64.decode(Convert.toStr((String)signStr)));
+                Assert.isTrue(verify,new CheckException("参数验签失败"));
             }
-            //组装返回值
-            BaseRsp<T> result = new BaseRsp<>();
-            result.setCode(obj.getInteger("code"));
-            result.setMsg(obj.getString("msg"));
-            result.setData(o);
-            return result;
         }
+        //组装返回值
+        BaseRsp<T> result = new BaseRsp<>();
+        result.setCode(StrUtil.isNotBlank(obj.getString("code")) ? obj.getInteger("code") : 0);
+        result.setMsg(obj.getString("msg"));
+        result.setData(o);
+        return result;
     }
 
     public String getAgentId() {

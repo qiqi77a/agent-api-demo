@@ -16,5 +16,5 @@ public class QueryOrderReq {
     /**
      * 下单时间
      */
-    public String payOrderTime;
+    public Long payOrderTime;
 }

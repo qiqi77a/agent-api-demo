@@ -4,8 +4,6 @@ import cn.hutool.core.codec.Base64;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import cn.hutool.crypto.asymmetric.KeyType;
-import cn.hutool.crypto.asymmetric.RSA;
 import cn.hutool.crypto.asymmetric.Sign;
 import cn.hutool.crypto.asymmetric.SignAlgorithm;
 import com.alibaba.fastjson2.*;
@@ -17,6 +15,7 @@ import java.io.*;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -251,7 +250,7 @@ public class AgentApiClient {
         if (dataJson != null) {
             String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
             obj.put("data", decryptStrData);
-            o = JSON.parseObject(decryptStrData, rsp);
+            o = getT(rsp, decryptStrData);
 
             //验签
             Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
@@ -268,6 +267,20 @@ public class AgentApiClient {
         result.setMsg(obj.getString("msg"));
         result.setData(o);
         return result;
+    }
+
+    private static <T> T getT(Class<T> rsp, String decryptStrData) {
+        JSONObject jsonObject = JSON.parseObject(decryptStrData);
+        T o = jsonObject.to(rsp);
+        Arrays.stream(rsp.getFields()).filter(f -> f.getType() == List.class).forEach(i -> {
+            JSONArray jsonArray = jsonObject.getJSONArray(i.getName());
+            try {
+                i.set(o, jsonArray.toList(null));
+            } catch (Exception e) {
+                throw new CheckException("类型转换失败,FieldName：" + i.getName());
+            }
+        });
+        return o;
     }
 
     public String getAgentId() {

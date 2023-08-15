@@ -16,6 +16,9 @@ public enum UrlConstant {
     TRANS_SEND_MSG(TransSendMsgReq.class, "/trade/sendMsg", RequestType.POST, TransSendMsgRsp.class, false),
     TRANS_PAY(TransPayReq.class, "/trade/pay", RequestType.POST, TransPayRsp.class, false),
     QUERY_ORDER(QueryOrderReq.class, "/trade/queryOrder", RequestType.POST, QueryOrderRsp.class, false),
+    BIND_TRADE_CARD(BindTradeCardReq.class, "/merchant/bindMerTradeCard", RequestType.POST, BindTradeCardRsp.class, false),
+    BIND_TRADE_CARD_CONFIRM(BindTradeCardConfirmReq.class, "/merchant/bindMerTradeCardConfirm", RequestType.POST, BindTradeCardConfirmRsp.class, false),
+    QUERY_TRADE_CARD(QueryTradeCardReq.class, "/merchant/queryMerTradeCard", RequestType.POST, QueryTradeCardRsp.class, false),
     TEST(TestReq.class, "/test1", RequestType.POST, TestRsp.class, false),
     ;
 

@@ -79,6 +79,18 @@ public class demo {
                     //订单查询
                     queryOrder(agentApiClient);
                     break;
+                case 8:
+                    //绑定交易卡
+                    bindMerTradeCard(agentApiClient);
+                    break;
+                case 9:
+                    //绑定交易卡确定
+                    bindMerTradeCardConfirm(agentApiClient);
+                    break;
+                case 10:
+                    //查询交易卡列表
+                    queryMerTradeCard(agentApiClient);
+                    break;
             }
         } catch (CheckException e) {
             e.printStackTrace();
@@ -86,12 +98,48 @@ public class demo {
         return "success";
     }
 
+    private void queryMerTradeCard(AgentApiClient client) {
+        QueryTradeCardReq req = new QueryTradeCardReq();
+        req.merchantCode = 344480975587237888L;
+//        req.bankCardNo = "6222021211886745951";
+        BaseRsp<QueryTradeCardRsp> result = client.send(req, QueryTradeCardRsp.class);
+        QueryTradeCardRsp data = result.getData();
+        System.out.println(JSON.toJSONString(result));
+        System.out.println(JSON.toJSONString(data));
+    }
+
+    private void bindMerTradeCardConfirm(AgentApiClient client) {
+        BindTradeCardConfirmReq req = new BindTradeCardConfirmReq();
+        req.merchantCode = 344480975587237888L;
+        req.bankCardNo = "6222021211886745951";
+        req.smsCode = "123456";
+        req.payChannel = 900;
+        BaseRsp<BindTradeCardConfirmRsp> result = client.send(req, BindTradeCardConfirmRsp.class);
+        BindTradeCardConfirmRsp data = result.getData();
+        System.out.println(JSON.toJSONString(result));
+        System.out.println(JSON.toJSONString(data));
+    }
+
+    private void bindMerTradeCard(AgentApiClient client) {
+        BindTradeCardReq req = new BindTradeCardReq();
+        req.merchantCode = 344480975587237888L;
+        req.bankCardNo = "6222021211886745951";
+        req.phone = "15574775840";
+        req.valiDate = "0830";
+        req.checkNo = "123";
+        req.payChannel = 900;
+        BaseRsp<BindTradeCardRsp> result = client.send(req, BindTradeCardRsp.class);
+        BindTradeCardRsp data = result.getData();
+        System.out.println(JSON.toJSONString(result));
+        System.out.println(JSON.toJSONString(data));
+    }
+
     private void queryOrder(AgentApiClient client) {
         QueryOrderReq req = new QueryOrderReq();
-        req.merchantCode = 862017372775649280L;
-        req.orderNo = "AA20230602862030082812809217";
-        req.agentOrderNo = "3zxp3rh76auvychy86";
-        req.payOrderTime = "20230602123014";
+        req.merchantCode = 344480975587237888L;
+        req.orderNo = "AA20230809886682797740294145";
+        req.agentOrderNo = "125chhovz516zvt3m6";
+        req.payOrderTime = 20230809123014L;
         BaseRsp<QueryOrderRsp> result = client.send(req, QueryOrderRsp.class);
         QueryOrderRsp data = result.getData();
         System.out.println(JSON.toJSONString(result));
@@ -100,9 +148,9 @@ public class demo {
 
     private void pay(AgentApiClient client) {
         TransPayReq req = new TransPayReq();
-        req.merchantCode = 862017372775649280L;
+        req.merchantCode = 344480975587237888L;
         req.smsCode = "123456";
-        req.orderNo = "AA20230602862030082812809217";
+        req.orderNo = "AA20230809886682797740294145";
         BaseRsp<TransPayRsp> result = client.send(req, TransPayRsp.class);
         TransPayRsp data = result.getData();
         System.out.println(JSON.toJSONString(result));
@@ -111,15 +159,15 @@ public class demo {
 
     private void sendMsg(AgentApiClient client) {
         TransSendMsgReq req = new TransSendMsgReq();
-        req.merchantCode = 862017372775649280L;
+        req.merchantCode = 344480975587237888L;
         req.amount = 10200L;
         req.tradeRate = 6100L;
         req.settleFee = 150L;
         req.agentOrderNo = RandomUtil.randomString(18);
-        req.cardNo = "5525344864174609";
+        req.cardNo = "4897348709886569";
         req.validPeriod = "0827";
-        req.cvn = "764";
-        req.phone = "13498652013";
+        req.cvn = "569";
+        req.phone = "15574775840";
         BaseRsp<TransSendMsgRsp> result = client.send(req, TransSendMsgRsp.class);
         TransSendMsgRsp data = result.getData();
         System.out.println(JSON.toJSONString(result));
@@ -128,9 +176,9 @@ public class demo {
 
     private void modifyMerSettleCard(AgentApiClient client) {
         ModifyMerSettleCardReq req = new ModifyMerSettleCardReq();
-        req.merchantCode = 862017372775649280L;
-        req.bankCardNo = "4026586613212588";
-        req.phone = "13498652013";
+        req.merchantCode = 344480975587237888L;
+        req.bankCardNo = "6222024698416586806";
+        req.phone = "15574775840";
         BaseRsp<ModifyMerSettleCardRsp> result = client.send(req, ModifyMerSettleCardRsp.class);
         ModifyMerSettleCardRsp data = result.getData();
         System.out.println(JSON.toJSONString(result));
@@ -139,7 +187,7 @@ public class demo {
 
     private void queryMerUpStatus(AgentApiClient client) {
         MerUpStatusReq req = new MerUpStatusReq();
-        req.merchantCode = 862017372775649280L;
+        req.merchantCode = 344480975587237888L;
         BaseRsp<MerUpStatusRsp> result = client.send(req, MerUpStatusRsp.class);
         MerUpStatusRsp data = result.getData();
         System.out.println(JSON.toJSONString(result));
@@ -149,18 +197,18 @@ public class demo {
     private void testMerchantUp(AgentApiClient client) {
         MerchantUpReq req = new MerchantUpReq();
         //商户基本信息
-        req.merPhone = "13498652013";
+        req.merPhone = "15843584970";
 
         //身份证信息
-        req.idCardFrontFilepath = "http://oss-test.99kypay.com/message/7f02b7affb87420fb09cef3233ae938f.jpg";
-        req.idCardBackFilepath = "http://oss-test.99kypay.com/message/a7c143dfc7da48f8ba18f9c5fafbaeab.jpg";
-        req.realName = "万晧";
-        req.idCardNo = "460005198412098950";
+        req.idCardFrontFilepath = "http://oss-test.99kypay.com/mer_idcard_front/205b08b6ccf14387ad0f4e03825e4235.jpg";
+        req.idCardBackFilepath = "http://oss-test.99kypay.com/mer_idcard_back/b5dcb74d3d3f47648757c6bae69d54e5.jpg";
+        req.realName = "柏桂英";
+        req.idCardNo = "152602198405148262";
         req.idCardValidRange = "20081121-20281121";
 
         //结算卡信息
-        req.bankCardNo = "40551260331390897";
-        req.phone = "13498652013";
+        req.bankCardNo = "6222028595281655644";
+        req.phone = "15843584970";
 
         BaseRsp<MerchantUpRsp> result = client.send(req, MerchantUpRsp.class);
         MerchantUpRsp data = result.getData();

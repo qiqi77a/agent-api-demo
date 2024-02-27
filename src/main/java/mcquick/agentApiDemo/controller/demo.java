@@ -23,13 +23,63 @@ public class demo {
     @Resource
     private AgentApiClient agentApiClient;
 
-    @PostMapping("/callback")
-    public String callBack(@RequestBody String resp) {
-        System.out.println("~~~~~~~~~~~~~~~~~~~/callback start~~~~~~~~~~~~~~~~~~~~~~~");
+    @PostMapping("/payCallback")
+    public String payCallback(@RequestBody String resp) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~/payCallback start~~~~~~~~~~~~~~~~~~~~~~~");
         //处理返回值
         PayCallBack data = null;
         try {
             BaseRsp<PayCallBack> result = agentApiClient.afterSend(PayCallBack.class, resp);
+
+            //订单支付异步通知
+            System.out.println("accept success");
+            data = result.getData();
+            System.out.println(JSON.toJSONString(result));
+            System.out.println(JSON.toJSONString(data));
+
+            //业务处理。。。
+
+            //验签成功
+            return "SUCCESS";
+        } catch (CheckException e) {
+            //验签失败
+            return "验签失败";
+        }
+    }
+
+
+    @PostMapping("/upCallback")
+    public String upCallback(@RequestBody String resp) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~/upCallback start~~~~~~~~~~~~~~~~~~~~~~~");
+        //处理返回值
+        MerUpCallBack data = null;
+        try {
+            BaseRsp<MerUpCallBack> result = agentApiClient.afterSend(MerUpCallBack.class, resp);
+
+            //订单支付异步通知
+            System.out.println("accept success");
+            data = result.getData();
+            System.out.println(JSON.toJSONString(result));
+            System.out.println(JSON.toJSONString(data));
+
+            //业务处理。。。
+
+            //验签成功
+            return "SUCCESS";
+        } catch (CheckException e) {
+            //验签失败
+            return "验签失败";
+        }
+    }
+
+
+    @PostMapping("/bindCallback")
+    public String bindCallback(@RequestBody String resp) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~/bindCallback start~~~~~~~~~~~~~~~~~~~~~~~");
+        //处理返回值
+        MerBindSnCallBack data = null;
+        try {
+            BaseRsp<MerBindSnCallBack> result = agentApiClient.afterSend(MerBindSnCallBack.class, resp);
 
             //订单支付异步通知
             System.out.println("accept success");

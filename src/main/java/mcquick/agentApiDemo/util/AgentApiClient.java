@@ -212,15 +212,16 @@ public class AgentApiClient {
         JSONObject obj = JSON.parseObject(resp);
         //解密
         String dataJson = obj.getString("data");
-        System.out.println("dataJson>>>" + dataJson);
         T o = null;
         if (dataJson != null) {
             String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
+            System.out.println("dataJson>>>" + decryptStrData);
             obj.put("data", decryptStrData);
+            o = getT((Class<T>) typeReference.getRawType(), decryptStrData);
             o = JSON.parseObject(decryptStrData, typeReference);
 
             //验签
-            Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
+            Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, Object>>(){});
             Object signStr = map.get("sign");
             if (signStr != null) {
                 Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);
@@ -245,15 +246,15 @@ public class AgentApiClient {
         JSONObject obj = JSON.parseObject(resp);
         //解密
         String dataJson = obj.getString("data");
-        System.out.println("dataJson>>>" + dataJson);
         T o = null;
         if (dataJson != null) {
             String decryptStrData = SecureUtil.aes(key.getBytes()).decryptStr(dataJson, StandardCharsets.UTF_8);
+            System.out.println("dataJson>>>" + decryptStrData);
             obj.put("data", decryptStrData);
             o = getT(rsp, decryptStrData);
 
             //验签
-            Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, String>>(){});
+            Map<String, Object> map = JSONObject.parseObject(decryptStrData, new TypeReference<Map<String, Object>>(){});
             Object signStr = map.get("sign");
             if (signStr != null) {
                 Sign sign = SecureUtil.sign(SignAlgorithm.SHA1withRSA, null, publicKey);

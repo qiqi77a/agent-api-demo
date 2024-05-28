@@ -9,18 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum UrlConstant {
-    MERCHANT_UP(MerchantUpReq.class, "/merchant/upReceive", RequestType.POST, MerchantUpRsp.class, false),
-    FILE_UPLOAD(FileUploadReq.class, "/merchant/upload", RequestType.POST, FileUploadRsp.class, false),
-    MER_UP_STATUS(MerUpStatusReq.class, "/merchant/queryMerUpStatus", RequestType.POST, MerUpStatusRsp.class, false),
-    MODIFY_MER_SETTLE_CARD(ModifyMerSettleCardReq.class, "/merchant/modifyMerSettleCard", RequestType.POST, ModifyMerSettleCardRsp.class, false),
-    TRANS_SEND_MSG(TransSendMsgReq.class, "/trade/sendMsg", RequestType.POST, TransSendMsgRsp.class, false),
-    TRANS_PAY(TransPayReq.class, "/trade/pay", RequestType.POST, TransPayRsp.class, false),
-    QUERY_ORDER(QueryOrderReq.class, "/trade/queryOrder", RequestType.POST, QueryOrderRsp.class, false),
-    BIND_TRADE_CARD(BindTradeCardReq.class, "/merchant/bindMerTradeCard", RequestType.POST, BindTradeCardRsp.class, false),
-    BIND_TRADE_CARD_CONFIRM(BindTradeCardConfirmReq.class, "/merchant/bindMerTradeCardConfirm", RequestType.POST, BindTradeCardConfirmRsp.class, false),
-    QUERY_TRADE_CARD(QueryTradeCardReq.class, "/merchant/queryMerTradeCard", RequestType.POST, QueryTradeCardRsp.class, false),
     COMM_NO_PIKE_SUBMIT_ORDER(CommSubmitOrderReq.class, "/comm/submitOrder", RequestType.POST, CommSubmitOrderRsp.class, false),
-    TEST(TestReq.class, "/test1", RequestType.POST, TestRsp.class, false),
     ;
 
     private Class<?> req;

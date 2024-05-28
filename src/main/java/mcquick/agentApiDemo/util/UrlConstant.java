@@ -19,6 +19,7 @@ public enum UrlConstant {
     BIND_TRADE_CARD(BindTradeCardReq.class, "/merchant/bindMerTradeCard", RequestType.POST, BindTradeCardRsp.class, false),
     BIND_TRADE_CARD_CONFIRM(BindTradeCardConfirmReq.class, "/merchant/bindMerTradeCardConfirm", RequestType.POST, BindTradeCardConfirmRsp.class, false),
     QUERY_TRADE_CARD(QueryTradeCardReq.class, "/merchant/queryMerTradeCard", RequestType.POST, QueryTradeCardRsp.class, false),
+    COMM_NO_PIKE_SUBMIT_ORDER(CommSubmitOrderReq.class, "/comm/submitOrder", RequestType.POST, CommSubmitOrderRsp.class, false),
     TEST(TestReq.class, "/test1", RequestType.POST, TestRsp.class, false),
     ;
 

@@ -37,6 +37,7 @@ public class AgentApiClient {
         this.key = key;
         this.privateKey = privateKey;
         this.publicKey = publicKey;
+        this.isHttps = host.startsWith("https");
     }
 
     public BaseRsp<?> send(Object req) {

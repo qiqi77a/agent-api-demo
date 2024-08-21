@@ -98,6 +98,102 @@ public class demo {
         }
     }
 
+    @PostMapping("/merSvipOpenNotify")
+    public String merSvipOpenNotify(@RequestBody String resp) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~/merSvipOpenNotify start~~~~~~~~~~~~~~~~~~~~~~~");
+        //处理返回值
+        MerSvipOpenNotifyVo data = null;
+        try {
+            BaseRsp<MerSvipOpenNotifyVo> result = agentApiClient.afterSend(MerSvipOpenNotifyVo.class, resp);
+
+            //订单支付异步通知
+            System.out.println("accept success");
+            data = result.getData();
+            System.out.println(JSON.toJSONString(result));
+            System.out.println(JSON.toJSONString(data));
+
+            //业务处理。。。
+
+            //验签成功
+            return "SUCCESS";
+        } catch (CheckException e) {
+            //验签失败
+            return "验签失败";
+        }
+    }
+
+    @PostMapping("/merCardData")
+    public String merCardData(@RequestBody String resp) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~/merCardData start~~~~~~~~~~~~~~~~~~~~~~~");
+        //处理返回值
+        MerCardDataVo data = null;
+        try {
+            BaseRsp<MerCardDataVo> result = agentApiClient.afterSend(MerCardDataVo.class, resp);
+
+            //订单支付异步通知
+            System.out.println("accept success");
+            data = result.getData();
+            System.out.println(JSON.toJSONString(result));
+            System.out.println(JSON.toJSONString(data));
+
+            //业务处理。。。
+
+            //验签成功
+            return "SUCCESS";
+        } catch (CheckException e) {
+            //验签失败
+            return "验签失败";
+        }
+    }
+
+    @PostMapping("/merLoanData")
+    public String merLoanData(@RequestBody String resp) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~/merLoanData start~~~~~~~~~~~~~~~~~~~~~~~");
+        //处理返回值
+        MerLoanDataVo data = null;
+        try {
+            BaseRsp<MerLoanDataVo> result = agentApiClient.afterSend(MerLoanDataVo.class, resp);
+
+            //订单支付异步通知
+            System.out.println("accept success");
+            data = result.getData();
+            System.out.println(JSON.toJSONString(result));
+            System.out.println(JSON.toJSONString(data));
+
+            //业务处理。。。
+
+            //验签成功
+            return "SUCCESS";
+        } catch (CheckException e) {
+            //验签失败
+            return "验签失败";
+        }
+    }
+
+    @PostMapping("/merPayData")
+    public String merPayData(@RequestBody String resp) {
+        System.out.println("~~~~~~~~~~~~~~~~~~~/merPayData start~~~~~~~~~~~~~~~~~~~~~~~");
+        //处理返回值
+        MerPayDataVo data = null;
+        try {
+            BaseRsp<MerPayDataVo> result = agentApiClient.afterSend(MerPayDataVo.class, resp);
+
+            //订单支付异步通知
+            System.out.println("accept success");
+            data = result.getData();
+            System.out.println(JSON.toJSONString(result));
+            System.out.println(JSON.toJSONString(data));
+
+            //业务处理。。。
+
+            //验签成功
+            return "SUCCESS";
+        } catch (CheckException e) {
+            //验签失败
+            return "验签失败";
+        }
+    }
+
     @PostMapping("/commOrderCallback")
     public String commOrderCallback(@RequestBody String resp) {
         System.out.println("~~~~~~~~~~~~~~~~~~~/commOrderCallback start~~~~~~~~~~~~~~~~~~~~~~~");
@@ -181,10 +277,10 @@ public class demo {
         CommSubmitOrderReq req = new CommSubmitOrderReq();
         req.tradeNo = RandomUtil.randomString(32);
 //        req.tradeNo = "qpylierhye9hc6y33dackwttskt49lk9";
-        req.itemId = 1660;
+        req.itemId = 2622;
         req.idCardNo = "420101199807170328";
-        req.idCardName = "秦阿";
-        req.contactor = "秦阿";
+        req.idCardName = "秦阿一";
+        req.contactor = "秦阿一";
         req.contactTel = "13446534436";
         req.contactProv = "黑龙江省";
         req.contactCity = "齐齐哈尔市";

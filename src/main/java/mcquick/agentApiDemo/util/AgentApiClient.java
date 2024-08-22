@@ -48,15 +48,15 @@ public class AgentApiClient {
     }
 
     public <T> BaseRsp<T> send(Object req, Class<T> rsp) {
-        Assert.isNotNull(req, new CheckException("req不能为空"));
-        UrlConstant urlTool = UrlConstant.getUrlConstantByReq(req.getClass());
+        UrlConstant urlTool = req != null ? UrlConstant.getUrlConstantByReq(req.getClass()) : UrlConstant.getUrlConstantByRsp(rsp);
         Assert.isNotNull(urlTool, new CheckException("没有这个请求接口！"));
+        Assert.isTrue(urlTool.getReq() == Void.class || req != null, new CheckException("req不能为空"));
         Assert.isTrue(urlTool.getRsp().equals(rsp), "不支持这类返回值，请参考UrlConstant！");
         return send(req, urlTool, rsp);
     }
 
     public <T> BaseRsp<T> send(Class<T> rsp) {
-        UrlConstant urlTool = UrlConstant.getUrlConstantByRsp(rsp.getClass());
+        UrlConstant urlTool = UrlConstant.getUrlConstantByRsp(rsp);
         Assert.isNotNull(urlTool, new CheckException("没有这个请求接口！"));
         Assert.isTrue(urlTool.getRsp().equals(rsp), "不支持这类返回值，请参考UrlConstant！");
         return send(null, urlTool, rsp);

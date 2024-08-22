@@ -3,9 +3,16 @@ package mcquick.agentApiDemo.controller;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson2.JSON;
-import mcquick.agentApiDemo.entity.request.*;
-import mcquick.agentApiDemo.entity.response.*;
+import mcquick.agentApiDemo.entity.request.comm.CommSubmitOrderReq;
+import mcquick.agentApiDemo.entity.request.credit.ApplyCardReq;
+import mcquick.agentApiDemo.entity.request.credit.ProductListReq;
+import mcquick.agentApiDemo.entity.request.credit.QueryOrderReq;
 import mcquick.agentApiDemo.entity.response.base.BaseRsp;
+import mcquick.agentApiDemo.entity.response.comm.CommSubmitOrderRsp;
+import mcquick.agentApiDemo.entity.response.comm.OrderCallbackMsgVo;
+import mcquick.agentApiDemo.entity.response.credit.ApplyCardRsp;
+import mcquick.agentApiDemo.entity.response.credit.ProductListRsp;
+import mcquick.agentApiDemo.entity.response.credit.QueryOrderRsp;
 import mcquick.agentApiDemo.exception.CheckException;
 import mcquick.agentApiDemo.util.AgentApiClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,11 +55,50 @@ public class demo {
     public String test() {
         try {
             //通讯卡不选卡下单
-            commNoPikeSubmitOrder(agentApiClient);
+//            commNoPikeSubmitOrder(agentApiClient);
+            //查询办卡产品
+//            queryProductList(agentApiClient);
+            //办卡申请
+//            applyCard(agentApiClient);
+            //查询办卡订单
+            queryApplyCardOrder(agentApiClient);
         } catch (CheckException e) {
             e.printStackTrace();
         }
         return "success";
+    }
+
+    private void queryApplyCardOrder(AgentApiClient client) {
+        QueryOrderReq req = new QueryOrderReq();
+        req.orderNo = "7l2986ma9vpkexhfsllwm1wi6vpbob1z";
+        BaseRsp<QueryOrderRsp> result = client.send(req, QueryOrderRsp.class);
+        QueryOrderRsp data = result.getData();
+        System.out.println(JSON.toJSONString(result));
+        System.out.println(JSON.toJSONString(data));
+    }
+
+    private void applyCard(AgentApiClient client) {
+        ApplyCardReq req = new ApplyCardReq();
+        req.orderNo = RandomUtil.randomString(32);
+        req.itemId = "200003";
+        req.idCardNo = "420101198302114000";
+        req.idCardName = "章易太";
+        req.contactTel = "13865235994";
+        req.contactProv = "广东省";
+        req.contactCity = "深圳市";
+        BaseRsp<ApplyCardRsp> result = client.send(req, ApplyCardRsp.class);
+        ApplyCardRsp data = result.getData();
+        System.out.println(JSON.toJSONString(result));
+        System.out.println(JSON.toJSONString(data));
+    }
+
+    private void queryProductList(AgentApiClient client) {
+        ProductListReq req = new ProductListReq();
+        req.agentId = client.getAgentId();
+        BaseRsp<ProductListRsp> result = client.send(req, ProductListRsp.class);
+        ProductListRsp data = result.getData();
+        System.out.println(JSON.toJSONString(result));
+        System.out.println(JSON.toJSONString(data));
     }
 
     private void commNoPikeSubmitOrder(AgentApiClient client) {

@@ -1,7 +1,13 @@
 package mcquick.agentApiDemo.util;
 
-import mcquick.agentApiDemo.entity.request.*;
-import mcquick.agentApiDemo.entity.response.*;
+import mcquick.agentApiDemo.entity.request.comm.CommSubmitOrderReq;
+import mcquick.agentApiDemo.entity.request.credit.ApplyCardReq;
+import mcquick.agentApiDemo.entity.request.credit.ProductListReq;
+import mcquick.agentApiDemo.entity.request.credit.QueryOrderReq;
+import mcquick.agentApiDemo.entity.response.comm.CommSubmitOrderRsp;
+import mcquick.agentApiDemo.entity.response.credit.ApplyCardRsp;
+import mcquick.agentApiDemo.entity.response.credit.ProductListRsp;
+import mcquick.agentApiDemo.entity.response.credit.QueryOrderRsp;
 import mcquick.agentApiDemo.enums.RequestType;
 
 import java.util.Arrays;
@@ -10,6 +16,9 @@ import java.util.stream.Collectors;
 
 public enum UrlConstant {
     COMM_NO_PIKE_SUBMIT_ORDER(CommSubmitOrderReq.class, "/comm/submitOrder", RequestType.POST, CommSubmitOrderRsp.class, false),
+    CREDIT_PRODUCT_LIST(ProductListReq.class, "/credit/productList", RequestType.POST, ProductListRsp.class, false),
+    CREDIT_APPLY_CARD(ApplyCardReq.class, "/credit/applyCard", RequestType.POST, ApplyCardRsp.class, false),
+    CREDIT_QUERY_CARD_ORDER(QueryOrderReq.class, "/credit/queryCardOrder", RequestType.POST, QueryOrderRsp.class, false),
     ;
 
     private Class<?> req;

@@ -1,4 +1,4 @@
-package mcquick.agentApiDemo.entity.response;
+package mcquick.agentApiDemo.entity.response.comm;
 
 /**
  * 通讯卡订单回调参数

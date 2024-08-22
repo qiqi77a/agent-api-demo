@@ -1,4 +1,4 @@
-package mcquick.agentApiDemo.entity.request;
+package mcquick.agentApiDemo.entity.request.comm;
 
 /**
  * 不选号订单提交请求

@@ -1,4 +1,4 @@
-package mcquick.agentApiDemo.entity.response;
+package mcquick.agentApiDemo.entity.response.comm;
 
 /**
  * 不选号订单提交响应
